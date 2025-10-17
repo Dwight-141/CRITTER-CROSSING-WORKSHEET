@@ -14,11 +14,21 @@ class Game
   void render();
   void mouseClicked(sf::Event event);
   void keyPressed(sf::Event event);
+  void backgroundInit();
+  void menuInit();
+  
+  enum MenuState { MAIN, GAME};
 
  private:
   sf::RenderWindow& window;
-  sf::Sprite ball;
-  sf::Texture ball_texture;
+  sf::Sprite background;
+  sf::Texture background_texture;
+
+  sf::Font font;
+  sf::Text menu_text;
+  sf::Text play_option;
+  sf::Text quit_option;
+  MenuState currentState 
 
 };
 
