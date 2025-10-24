@@ -10,6 +10,10 @@ Game::Game(sf::RenderWindow& game_window)
 
 Game::~Game()
 {
+	delete [] animals;
+	delete [] passports;
+	delete character;
+	delete passport;
 
 }
 
@@ -17,6 +21,12 @@ bool Game::init()
 {
 	backgroundInit();
 	menuInit();
+
+	character = new sf::Sprite;
+	passport = new sf::Sprite;
+
+	//sf::Texture* animals = new sf::Texture[3];
+	//sf::Texture* passports = new sf::Texture[3];
 	return true;
 }
 
@@ -117,6 +127,35 @@ void Game::menuInit()
 	quit_option.setCharacterSize(50);
 	quit_option.setFillColor(sf::Color(0, 0, 0, 255));
 	quit_option.setPosition(800, 300);
+}
+
+void Game::textureInit()
+{
+	if (!animals[0].loadFromFile("../Data/Images/Critter Crossing Customs/penguin.png"))
+	{
+		std::cout << "font did not load \n";
+	}
+	if (!animals[0].loadFromFile("../Data/Images/Critter Crossing Customs/penguin passport.png"))
+	{
+		std::cout << "font did not load \n";
+	}
+	if (!animals[1].loadFromFile("../Data/Images/Critter Crossing Customs/elephant.png"))
+	{
+		std::cout << "font did not load \n";
+	}
+	if (!animals[1].loadFromFile("../Data/Images/Critter Crossing Customs/elephant passport.png"))
+	{
+		std::cout << "font did not load \n";
+	}
+	if (!animals[2].loadFromFile("../Data/Images/Critter Crossing Customs/moose.png"))
+	{
+		std::cout << "font did not load \n";
+	}
+	if (!animals[2].loadFromFile("../Data/Images/Critter Crossing Customs/moose passport.png"))
+	{
+		std::cout << "font did not load \n";
+	}
+
 }
 
 

@@ -16,6 +16,7 @@ class Game
   void keyPressed(sf::Event event);
   void backgroundInit();
   void menuInit();
+  void textureInit();
   
   enum MenuState { MAIN, GAME };
 
@@ -30,6 +31,12 @@ class Game
   sf::Text quit_option;
   MenuState currentState = MAIN;
   bool play_selected = false;
+
+  sf::Sprite* character;
+  sf::Sprite* passport;
+
+  sf::Texture* animals = new sf::Texture[3];
+  sf::Texture* passports = new sf::Texture[3];
 
 };
 
