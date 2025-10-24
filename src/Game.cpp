@@ -28,9 +28,21 @@ void Game::update(float dt)
 void Game::render()
 {
 	window.draw(background);
-	window.draw(menu_text);
-	window.draw(play_option);
-	window.draw(quit_option);
+	switch (currentState)
+	{
+	case MAIN:
+		window.draw(menu_text);
+		window.draw(play_option);
+		window.draw(quit_option);
+
+		break;
+	case GAME:
+		break;
+	}
+
+
+
+
 }
 
 void Game::mouseClicked(sf::Event event)
@@ -43,7 +55,31 @@ void Game::mouseClicked(sf::Event event)
 
 void Game::keyPressed(sf::Event event)
 {
-
+	if ((event.key.code == sf::Keyboard::Left) || (event.key.code == sf::Keyboard::Right))
+	{
+		play_selected = !play_selected;
+		if (play_selected)
+		{
+			play_option.setString("> Play <");
+			quit_option.setString("Quit");
+		}
+		else
+		{
+			play_option.setString("Play");
+			quit_option.setString("> Quit <");
+		}
+	}
+	else if (event.key.code == sf::Keyboard::Enter)
+	{
+		if (play_selected)
+		{
+			currentState = GAME;
+		}
+		else
+		{
+			window.close();
+		}
+	}
 }
 
 void Game::backgroundInit()

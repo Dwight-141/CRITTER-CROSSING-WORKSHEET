@@ -17,7 +17,7 @@ class Game
   void backgroundInit();
   void menuInit();
   
-  enum MenuState { MAIN, GAME};
+  enum MenuState { MAIN, GAME };
 
  private:
   sf::RenderWindow& window;
@@ -28,7 +28,8 @@ class Game
   sf::Text menu_text;
   sf::Text play_option;
   sf::Text quit_option;
-  MenuState currentState 
+  MenuState currentState = MAIN;
+  bool play_selected = false;
 
 };
 
