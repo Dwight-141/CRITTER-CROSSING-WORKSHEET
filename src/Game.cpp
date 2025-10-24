@@ -21,18 +21,16 @@ bool Game::init()
 {
 	backgroundInit();
 	menuInit();
+	textureInit();
 
 	character = new sf::Sprite;
 	passport = new sf::Sprite;
-
-	//sf::Texture* animals = new sf::Texture[3];
-	//sf::Texture* passports = new sf::Texture[3];
 	return true;
 }
 
 void Game::update(float dt)
 {
-
+	dragSprite(dragged);
 }
 
 void Game::render()
@@ -47,6 +45,8 @@ void Game::render()
 
 		break;
 	case GAME:
+		window.draw(*character);
+		window.draw(*passport);
 		break;
 	}
 
@@ -61,6 +61,29 @@ void Game::mouseClicked(sf::Event event)
 	sf::Vector2i click = sf::Mouse::getPosition(window);
 
 
+}
+
+void Game::mouseButtonPressed(sf::Event event)
+{
+	if (event.mouseButton.button == sf::Mouse::Left)
+	{
+		sf::Vector2i click = sf::Mouse::getPosition(window);
+		sf::Vector2f clickf = static_cast<sf::Vector2f>(click);
+
+		if (passport->getGlobalBounds().contains(clickf))
+		{
+			sf::Vector2f drag_offset = clickf - passport->getPosition();
+			dragged = passport;
+		}
+	}
+}
+
+void Game::mouseButtonReleased(sf::Event event)
+{
+	if (event.mouseButton.button == sf::Mouse::Left)
+	{
+		dragged = nullptr;
+	}
 }
 
 void Game::keyPressed(sf::Event event)
@@ -84,6 +107,7 @@ void Game::keyPressed(sf::Event event)
 		if (play_selected)
 		{
 			currentState = GAME;
+			newAnimal();
 		}
 		else
 		{
@@ -135,7 +159,7 @@ void Game::textureInit()
 	{
 		std::cout << "font did not load \n";
 	}
-	if (!animals[0].loadFromFile("../Data/Images/Critter Crossing Customs/penguin passport.png"))
+	if (!passports[0].loadFromFile("../Data/Images/Critter Crossing Customs/penguin passport.png"))
 	{
 		std::cout << "font did not load \n";
 	}
@@ -143,7 +167,7 @@ void Game::textureInit()
 	{
 		std::cout << "font did not load \n";
 	}
-	if (!animals[1].loadFromFile("../Data/Images/Critter Crossing Customs/elephant passport.png"))
+	if (!passports[1].loadFromFile("../Data/Images/Critter Crossing Customs/elephant passport.png"))
 	{
 		std::cout << "font did not load \n";
 	}
@@ -151,11 +175,51 @@ void Game::textureInit()
 	{
 		std::cout << "font did not load \n";
 	}
-	if (!animals[2].loadFromFile("../Data/Images/Critter Crossing Customs/moose passport.png"))
+	if (!passports[2].loadFromFile("../Data/Images/Critter Crossing Customs/moose passport.png"))
 	{
 		std::cout << "font did not load \n";
 	}
 
+}
+
+void Game::newAnimal()
+{
+	passport_accepted = false;
+	passport_rejected = false;
+
+	int animal_index = rand() % 3;
+	int passport_index = rand() % 3;
+
+	if (animal_index == passport_index)
+	{
+		should_accept = true;
+	}
+	else
+	{
+		should_accept = false;
+	}
+
+	character->setTexture(animals[animal_index], true);
+	character->setScale(1.8, 1.8);
+	character->setPosition(window.getSize().x / 12, window.getSize().y / 12);
+
+	passport->setTexture(passports[passport_index], true);
+	passport->setScale(0.6, 0.6);
+	passport->setPosition(window.getSize().x / 2, window.getSize().y / 3);
+
+}
+
+void Game::dragSprite(sf::Sprite* sprite)
+{
+	if (sprite != nullptr)
+	{
+		sf::Vector2i mouse_position = sf::Mouse::getPosition(window);
+		sf::Vector2f mouse_positionf = static_cast<sf::Vector2f>(mouse_position);
+
+		sf::Vector2f drag_position = mouse_positionf - drag_offset;
+		sprite->setPosition(drag_position.x, drag_position.y);
+		//std::cout << "dragging" << std::endl;
+	}
 }
 
 

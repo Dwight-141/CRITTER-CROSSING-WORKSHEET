@@ -6,37 +6,52 @@
 
 class Game
 {
- public:
-  Game(sf::RenderWindow& window);
-  ~Game();
-  bool init();
-  void update(float dt);
-  void render();
-  void mouseClicked(sf::Event event);
-  void keyPressed(sf::Event event);
-  void backgroundInit();
-  void menuInit();
-  void textureInit();
-  
-  enum MenuState { MAIN, GAME };
+public:
+	Game(sf::RenderWindow& window);
+	~Game();
+	bool init();
+	void update(float dt);
+	void render();
+	void mouseClicked(sf::Event event);
+	void mouseButtonPressed(sf::Event event);
+	void mouseButtonReleased(sf::Event event);
+	void keyPressed(sf::Event event);
+	void backgroundInit();
+	void menuInit();
+	void textureInit();
+	void newAnimal();
+	void dragSprite(sf::Sprite* sprite);
 
- private:
-  sf::RenderWindow& window;
-  sf::Sprite background;
-  sf::Texture background_texture;
+	enum MenuState { MAIN, GAME };
 
-  sf::Font font;
-  sf::Text menu_text;
-  sf::Text play_option;
-  sf::Text quit_option;
-  MenuState currentState = MAIN;
-  bool play_selected = false;
+private:
+	// background
+	sf::RenderWindow& window;
+	sf::Sprite background;
+	sf::Texture background_texture;
 
-  sf::Sprite* character;
-  sf::Sprite* passport;
+	//menu
+	sf::Font font;
+	sf::Text menu_text;
+	sf::Text play_option;
+	sf::Text quit_option;
+	MenuState currentState = MAIN;
+	bool play_selected = false;
 
-  sf::Texture* animals = new sf::Texture[3];
-  sf::Texture* passports = new sf::Texture[3];
+	//character
+	sf::Sprite* character;
+	sf::Sprite* passport;
+
+	sf::Texture* animals = new sf::Texture[3];
+	sf::Texture* passports = new sf::Texture[3];
+
+	bool passport_accepted;
+	bool passport_rejected;
+	bool should_accept;
+
+	//functionality
+	sf::Sprite* dragged = nullptr;
+	sf::Vector2f drag_offset;
 
 };
 
