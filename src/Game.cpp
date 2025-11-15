@@ -10,8 +10,8 @@ Game::Game(sf::RenderWindow& game_window)
 
 Game::~Game()
 {
-	delete [] animals;
-	delete [] passports;
+	delete[] animals;
+	delete[] passports;
 	delete character;
 	delete passport;
 
@@ -25,6 +25,7 @@ bool Game::init()
 
 	character = new sf::Sprite;
 	passport = new sf::Sprite;
+	stamp = new sf::Sprite;
 	return true;
 }
 
@@ -47,6 +48,9 @@ void Game::render()
 	case GAME:
 		window.draw(*character);
 		window.draw(*passport);
+		window.draw(accept);
+		window.draw(reject);
+		window.draw(*stamp);
 		break;
 	}
 
@@ -70,10 +74,37 @@ void Game::mouseButtonPressed(sf::Event event)
 		sf::Vector2i click = sf::Mouse::getPosition(window);
 		sf::Vector2f clickf = static_cast<sf::Vector2f>(click);
 
+		if (accept.getGlobalBounds().contains(clickf))
+		{
+			passport_accepted = true;
+			std::cout << "accept" << std::endl;
+			stamp->setTexture(stamp_texture[0], true);
+			stamp->setPosition(passport->getPosition().x, passport->getPosition().y);
+		}
+		else if (reject.getGlobalBounds().contains(clickf))
+		{
+			passport_rejected = true;
+			std::cout << "reject" << std::endl;
+			stamp->setTexture(stamp_texture[1], true);
+			stamp->setPosition(passport->getPosition().x, passport->getPosition().y);
+		}
+		else if (passport->getGlobalBounds().contains(clickf))
+		{
+			dragged = passport;
+		}
+		accept.setPosition(0, -200);
+		reject.setPosition(0, -200);
+	}
+
+	if (event.mouseButton.button == sf::Mouse::Right)
+	{
+		sf::Vector2i click = sf::Mouse::getPosition(window);
+		sf::Vector2f clickf = static_cast<sf::Vector2f>(click);
+
 		if (passport->getGlobalBounds().contains(clickf))
 		{
-			sf::Vector2f drag_offset = clickf - passport->getPosition();
-			dragged = passport;
+			accept.setPosition(clickf);
+			reject.setPosition(clickf.x, clickf.y + 110);
 		}
 	}
 }
@@ -179,7 +210,27 @@ void Game::textureInit()
 	{
 		std::cout << "font did not load \n";
 	}
+	if (!accept_texture.loadFromFile("../Data/Images/Critter Crossing Customs/accept button.png"))
+	{
+		std::cout << "font did not load \n";
+	}
+	if (!reject_texture.loadFromFile("../Data/Images/Critter Crossing Customs/reject button.png"))
+	{
+		std::cout << "font did not load \n";
+	}
+	if (!stamp_texture[0].loadFromFile("../Data/Images/Critter Crossing Customs/accept.png"))
+	{
+		std::cout << "font did not load \n";
+	}
+	if (!stamp_texture[1].loadFromFile("../Data/Images/Critter Crossing Customs/reject.png"))
+	{
+		std::cout << "font did not load \n";
+	}
 
+	accept.setTexture(accept_texture);
+	reject.setTexture(reject_texture);
+	accept.setPosition(0, -200);
+	reject.setPosition(0, -200);
 }
 
 void Game::newAnimal()
@@ -219,6 +270,16 @@ void Game::dragSprite(sf::Sprite* sprite)
 		sf::Vector2f drag_position = mouse_positionf - drag_offset;
 		sprite->setPosition(drag_position.x, drag_position.y);
 		//std::cout << "dragging" << std::endl;
+		if (passport_accepted)
+		{
+			stamp->setTexture(stamp_texture[0], true);
+			stamp->setPosition(sprite->getPosition().x, sprite->getPosition().y);
+		}
+		else if (passport_rejected)
+		{
+			stamp->setTexture(stamp_texture[1], true);
+			stamp->setPosition(sprite->getPosition().x, sprite->getPosition().y);
+		}
 	}
 }
 

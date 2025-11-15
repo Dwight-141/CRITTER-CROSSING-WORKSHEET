@@ -45,9 +45,19 @@ private:
 	sf::Texture* animals = new sf::Texture[3];
 	sf::Texture* passports = new sf::Texture[3];
 
+	//stamps
 	bool passport_accepted;
 	bool passport_rejected;
 	bool should_accept;
+	
+	sf::Sprite accept;
+	sf::Sprite reject;
+	sf::Sprite* stamp;
+
+	sf::Texture accept_texture;
+	sf::Texture reject_texture;
+	sf::Texture* stamp_texture = new sf::Texture[2];
+
 
 	//functionality
 	sf::Sprite* dragged = nullptr;
