@@ -3,6 +3,8 @@
 #define PLATFORMER_GAME_H
 
 #include <SFML/Graphics.hpp>
+#include <vector>
+#include "GameObject.h"
 
 class Game
 {
@@ -20,14 +22,15 @@ public:
 	void menuInit();
 	void textureInit();
 	void newAnimal();
-	void dragSprite(sf::Sprite* sprite);
+	void dragSprite(GameObject* sprite);
+	void returnPassport();
 
 	enum MenuState { MAIN, GAME };
 
 private:
 	// background
 	sf::RenderWindow& window;
-	sf::Sprite background;
+	GameObject background;
 	sf::Texture background_texture;
 
 	//menu
@@ -39,29 +42,34 @@ private:
 	bool play_selected = false;
 
 	//character
-	sf::Sprite* character;
-	sf::Sprite* passport;
+	GameObject character;
+	GameObject passport;
 
-	sf::Texture* animals = new sf::Texture[3];
-	sf::Texture* passports = new sf::Texture[3];
+	std::vector<sf::Texture> animals;
+	std::vector<sf::Texture> passports;
 
 	//stamps
 	bool passport_accepted;
 	bool passport_rejected;
 	bool should_accept;
+	bool stamped = false;
 	
-	sf::Sprite accept;
-	sf::Sprite reject;
-	sf::Sprite* stamp;
+	GameObject accept;
+	GameObject reject;
+	GameObject stamp;
 
 	sf::Texture accept_texture;
 	sf::Texture reject_texture;
-	sf::Texture* stamp_texture = new sf::Texture[2];
+	std::vector<sf::Texture> stamp_texture;
 
 
-	//functionality
-	sf::Sprite* dragged = nullptr;
+	//dragging
+	GameObject* dragged = nullptr;
 	sf::Vector2f drag_offset;
+
+	//score
+	int score = 0;
+	sf::Text score_text;
 
 };
 
