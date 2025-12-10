@@ -25,7 +25,7 @@ public:
 	void dragSprite(GameObject* sprite);
 	void returnPassport();
 
-	enum MenuState { MAIN, GAME };
+	enum MenuState { MAIN, GAME, LOSE};
 
 private:
 	// background
@@ -38,6 +38,7 @@ private:
 	sf::Text menu_text;
 	sf::Text play_option;
 	sf::Text quit_option;
+	sf::Text lose_text;
 	MenuState currentState = MAIN;
 	bool play_selected = false;
 

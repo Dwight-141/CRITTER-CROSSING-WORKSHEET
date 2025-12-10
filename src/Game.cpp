@@ -55,6 +55,10 @@ void Game::render()
 		window.draw(stamp.getSprite());
 		window.draw(score_text);
 		break;
+	case LOSE:
+		window.draw(lose_text);
+		window.draw(play_option);
+		window.draw(quit_option);
 	}
 
 
@@ -189,6 +193,13 @@ void Game::menuInit()
 	score_text.setFillColor(sf::Color(0, 0, 0, 255));
 	score_text.setPosition(window.getSize().x - score_text.getGlobalBounds().width, 0);
 
+	lose_text.setString("       You chose wrong!");
+	lose_text.setFont(font);
+	lose_text.setCharacterSize(50);
+	lose_text.setFillColor(sf::Color(0, 0, 0, 255));
+	lose_text.setPosition(
+		window.getSize().x / 2 - lose_text.getGlobalBounds().width / 2, 0);
+
 }
 
 void Game::textureInit()
@@ -297,9 +308,10 @@ void Game::returnPassport()
 			}
 			else
 			{
-				score--;
+				currentState = LOSE;
+				play_selected = false;
+				score = 0;
 				score_text.setString(std::to_string(score));
-				newAnimal();
 			}
 			score_text.setPosition(window.getSize().x - score_text.getGlobalBounds().width * 5, 0);
 		}
